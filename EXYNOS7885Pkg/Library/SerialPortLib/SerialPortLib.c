@@ -1,11 +1,13 @@
 #include <Base.h>
 #include <Library/IoLib.h>
 #include <Library/SerialPortLib.h>
-#include <Library/TimerLib.h>
+#include <Library/DebugLib.h>
 
-#define H6_UART0_BASE		0x05000000
-#define UART0_LSR 		(H6_UART0_BASE + 0x14)   /* line status register */
-#define UART0_THR		(H6_UART0_BASE + 0x0)    /* transmit holding register */
+#define H6_UART0_BASE    0x05000000
+#define UART0_LCR        (H6_UART0_BASE + 0xC)  /* line control register */
+#define UART0_LSR        (H6_UART0_BASE + 0x14) /* line status register */
+#define UART0_THR        (H6_UART0_BASE + 0x0)  /* transmit holding register */
+#define UART0_RBR        (H6_UART0_BASE + 0x0)  /* receive buffer register */
 
 /**
   Initialize the serial device hardware.
@@ -18,7 +20,6 @@
   @retval RETURN_DEVICE_ERROR   The serial device could not be initialized.
 
 **/
-
 RETURN_STATUS
 EFIAPI
 SerialPortInitialize (
@@ -26,11 +27,6 @@ SerialPortInitialize (
   )
 {
   return EFI_SUCCESS;
-}
-
-static void uart_putc(char c) {
-  while (!(MmioRead32(UART0_LSR) & (1 << 6))) {}
-  MmioWrite32(UART0_THR, c);
 }
 
 /**
@@ -48,7 +44,7 @@ static void uart_putc(char c) {
   @retval 0                NumberOfBytes is 0.
   @retval >0               The number of bytes written to the serial device.
                            If this value is less than NumberOfBytes, then the
-                           read operation failed.
+                           write operation failed.
 
 **/
 UINTN
@@ -59,20 +55,24 @@ SerialPortWrite (
   )
 {
   for (UINTN i = 0; i < NumberOfBytes; i++) {
-  if (Buffer[i] == '\n')
-        uart_putc('\r');
+    if (Buffer[i] == '\n') {
+      while (!(MmioRead32(UART0_LSR) & (1 << 5)));
+      MmioWrite32(UART0_THR, '\r');
+    }
 
-    uart_putc(Buffer[i]);
+    while (!(MmioRead32(UART0_LSR) & (1 << 5)));
+    MmioWrite32(UART0_THR, Buffer[i]);
   }
+
   return NumberOfBytes;
 }
 
 /**
-  Read data from serial device and save the datas in buffer.
+  Read data from serial device and save the data in buffer.
 
   Reads NumberOfBytes data bytes from a serial device into the buffer
   specified by Buffer. The number of bytes actually read is returned.
-  If the return value is less than NumberOfBytes, then the rest operation failed.
+  If the return value is less than NumberOfBytes, then the read operation failed.
   If Buffer is NULL, then ASSERT().
   If NumberOfBytes is zero, then return 0.
 
@@ -91,7 +91,12 @@ SerialPortRead (
   IN  UINTN   NumberOfBytes
   )
 {
-  return RETURN_UNSUPPORTED;
+  for (UINTN i = 0; i < NumberOfBytes; i++) {
+    while (!SerialPortPoll());
+    *Buffer = (UINT8)MmioRead32(UART0_RBR);
+  }
+
+  return NumberOfBytes;
 }
 
 /**
@@ -113,7 +118,7 @@ SerialPortPoll (
   VOID
   )
 {
-  return FALSE;
+  return !!(MmioRead32(UART0_LSR) & 1);
 }
 
 /**
@@ -152,13 +157,13 @@ SerialPortGetControl (
 }
 
 /**
-  Sets the baud rate, receive FIFO depth, transmit/receice time out, parity,
+  Sets the baud rate, receive FIFO depth, transmit/receive time out, parity,
   data bits, and stop bits on a serial device.
 
   @param BaudRate           The requested baud rate. A BaudRate value of 0 will
                             use the device's default interface speed.
                             On output, the value actually set.
-  @param ReveiveFifoDepth   The requested depth of the FIFO on the receive side
+  @param ReceiveFifoDepth   The requested depth of the FIFO on the receive side
                             of the serial interface. A ReceiveFifoDepth value
                             of 0 will use the device's default FIFO depth.
                             On output, the value actually set.

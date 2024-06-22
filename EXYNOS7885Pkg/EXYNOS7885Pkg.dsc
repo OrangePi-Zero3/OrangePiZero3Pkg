@@ -76,7 +76,7 @@
   # SimpleFbDxe
   #FrameBufferBltLib|EXYNOS7885Pkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
 
-  #SerialPortLib|EXYNOS7885Pkg/Library/FrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
+  SerialPortLib|EXYNOS7885Pkg/Library/SerialPortLib/SerialPortLib.inf
   PlatformBootManagerLib|EXYNOS7885Pkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
   MemoryInitPeiLib|EXYNOS7885Pkg/Library/MemoryInitPeiLib/PeiMemoryAllocationLib.inf
   PlatformPeiLib|EXYNOS7885Pkg/Library/PlatformPeiLib/PlatformPeiLib.inf
