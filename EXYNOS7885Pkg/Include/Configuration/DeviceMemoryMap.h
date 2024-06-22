@@ -61,9 +61,10 @@ static ARM_MEMORY_REGION_DESCRIPTOR_EX gDeviceMemoryDescriptorEx[] = {
 
 //--------------------- Register ---------------------
     {"SERIAL",           0x5000000, 0x1000,  AddMem, MEM_RES, UNCACHEABLE,  RtCode,   DEVICE},
+  {"GIC Distributor",    0x03021000, 0x00001000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   DEVICE},
+  {"GIC Redistributors", 0x03022000, 0x00002000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   DEVICE},
 
 //--------------------- DDR --------------------- */
-
   {"Reserved",           0x40000000, 0x00080000, AddMem, SYS_MEM, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED},
   {"RAM Partition",      0x40080000, 0x1FF80000, AddMem, SYS_MEM, SYS_MEM_CAP, Conv,   WRITE_BACK},
 
