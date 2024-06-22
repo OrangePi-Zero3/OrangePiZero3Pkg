@@ -25,7 +25,7 @@
 ################################################################################
 
 [FD.EXYNOS7885PKG_UEFI]
-BaseAddress   = 0x90000000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
+BaseAddress   = 0x40080000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
 Size          = 0x00200000|gArmTokenSpaceGuid.PcdFdSize         # The size in bytes of the FLASH Device
 ErasePolarity = 1
 
@@ -137,7 +137,7 @@ READ_LOCK_STATUS   = TRUE
   # Platform Dxes
   #
   INF EXYNOS7885Pkg/Drivers/EXYNOS7885PkgDxe/EXYNOS7885PkgDxe.inf
-  INF EXYNOS7885Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
+  #INF EXYNOS7885Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
   INF EXYNOS7885Pkg/Drivers/LogoDxe/LogoDxe.inf
 
   #
