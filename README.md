@@ -59,8 +59,6 @@ go 0x40080000
 
 # Credits
 
-SimpleFbDxe screen driver is from imbushuo's [Lumia950XLPkg](https://github.com/WOA-Project/Lumia950XLPkg).
-
 Zhuowei for making edk2-pixel3
 
 All the people in ``EDKII pain and misery, struggles and disappointment`` on Discord.
