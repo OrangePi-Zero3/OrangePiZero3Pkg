@@ -60,16 +60,18 @@ static ARM_MEMORY_REGION_DESCRIPTOR_EX gDeviceMemoryDescriptorEx[] = {
 */
 
 //--------------------- Register ---------------------
-    {"SERIAL",           0x5000000, 0x1000,  AddMem, MEM_RES, UNCACHEABLE,  RtCode,   DEVICE},
   {"GIC Distributor",    0x03021000, 0x00001000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   DEVICE},
   {"GIC Redistributors", 0x03022000, 0x00002000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   DEVICE},
+  {"UART",    		 0x05000000, 0x00001000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   DEVICE},
 
-//--------------------- DDR --------------------- */
+//------------------------ DDR -----------------------
   {"Reserved",           0x40000000, 0x00080000, AddMem, SYS_MEM, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED},
-  {"RAM Partition",      0x40080000, 0x1FF80000, AddMem, SYS_MEM, SYS_MEM_CAP, Conv,   WRITE_BACK},
+  {"UEFI FD",            0x40080000, 0x00200000, AddMem, SYS_MEM, SYS_MEM_CAP, BsCode, WRITE_BACK},
+  {"UEFI Stack",         0x40280000, 0x00040000, AddMem, SYS_MEM, SYS_MEM_CAP, BsData, WRITE_BACK},
+  {"CPU Vectors",        0x402C0000, 0x00010000, AddMem, SYS_MEM, SYS_MEM_CAP, BsCode, WRITE_BACK},
+  {"RAM Partition",      0x402D0000, 0x1FD30000, AddMem, SYS_MEM, SYS_MEM_CAP, Conv,   WRITE_BACK},
 
-
-    /* Terminator for MMU */
-    { "Terminator", 0, 0, 0, 0, 0, 0, 0}};
+//--------------- Terminator for MMU -----------------
+  { "Terminator", 0, 0, 0, 0, 0, 0, 0}};
 
 #endif
