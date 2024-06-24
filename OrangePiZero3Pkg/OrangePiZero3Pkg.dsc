@@ -205,6 +205,12 @@
 
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
 
+  #
+  # SoC Drivers
+  #
+  OrangePiZero3Pkg/Drivers/SunxiGpioDxe/SunxiGpioDxe.inf
+  OrangePiZero3Pkg/Drivers/HeartbeatDxe/HeartbeatDxe.inf
+
   MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
 
   #
