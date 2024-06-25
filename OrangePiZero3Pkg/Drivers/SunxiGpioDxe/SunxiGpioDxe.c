@@ -16,20 +16,82 @@ ConfigurePin (
   UINT32 Bit = GPIO_CFG_BIT(Pin);
   UINT32 Address;
 
-  if (Bank == SUNXI_GPIO_C && Number >= 0 && Number <= 7) Address = GPIO_CFG0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_C && Number >= 8 && Number <= 15) Address = GPIO_CFG1_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_C && Number == 16) Address = GPIO_CFG2_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_F && Number >= 0 && Number <= 6) Address = GPIO_CFG0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_G && Number >= 0 && Number <= 7) Address = GPIO_CFG0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_G && Number >= 8 && Number <= 15) Address = GPIO_CFG1_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_G && Number >= 16 && Number <= 19) Address = GPIO_CFG2_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_H && Number >= 0 && Number <= 7) Address = GPIO_CFG0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_H && Number >= 8 && Number <= 10) Address = GPIO_CFG1_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_I && Number >= 0 && Number <= 7) Address = GPIO_CFG0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_I && Number >= 8 && Number <= 15) Address = GPIO_CFG1_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_I && Number >= 16 && Number <= 19) Address = GPIO_CFG2_BASE(Bank);
-  else ASSERT(FALSE); // Invalid GPIO group / Number
-
+  switch (Bank) {
+      case SUNXI_GPIO_C:
+          switch (Number) {
+              case 0 ... 7:
+                  Address = GPIO_CFG0_BASE(Bank);
+                  break;
+              case 8 ... 15:
+                  Address = GPIO_CFG1_BASE(Bank);
+                  break;
+              case 16:
+                  Address = GPIO_CFG2_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      case SUNXI_GPIO_F:
+          switch (Number) {
+              case 0 ... 6:
+                  Address = GPIO_CFG0_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      case SUNXI_GPIO_G:
+          switch (Number) {
+              case 0 ... 7:
+                  Address = GPIO_CFG0_BASE(Bank);
+                  break;
+              case 8 ... 15:
+                  Address = GPIO_CFG1_BASE(Bank);
+                  break;
+              case 16 ... 19:
+                  Address = GPIO_CFG2_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      case SUNXI_GPIO_H:
+          switch (Number) {
+              case 0 ... 7:
+                  Address = GPIO_CFG0_BASE(Bank);
+                  break;
+              case 8 ... 10:
+                  Address = GPIO_CFG1_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      case SUNXI_GPIO_I:
+          switch (Number) {
+              case 0 ... 7:
+                  Address = GPIO_CFG0_BASE(Bank);
+                  break;
+              case 8 ... 15:
+                  Address = GPIO_CFG1_BASE(Bank);
+                  break;
+              case 16 ... 19:
+                  Address = GPIO_CFG2_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      default:
+          ASSERT(FALSE); // Invalid Bank
+          break;
+  }
 
   Configuration = MmioRead32(Address);
   Configuration &= ~(0x7 << Bit);
@@ -64,15 +126,70 @@ SetDrive (
   UINT32 Bit = GPIO_MDR_BIT(Pin);
   UINT32 Address;
 
-  if (Bank == SUNXI_GPIO_C && Number >= 0 && Number <= 15) Address = GPIO_MDR0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_C && Number == 16) Address = GPIO_MDR1_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_F && Number >= 0 && Number <= 6) Address = GPIO_MDR0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_G && Number >= 0 && Number <= 15) Address = GPIO_MDR0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_G && Number >= 16 && Number <= 19) Address = GPIO_MDR1_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_H && Number >= 0 && Number <= 10) Address = GPIO_MDR0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_I && Number >= 0 && Number <= 15) Address = GPIO_MDR0_BASE(Bank);
-  else if (Bank == SUNXI_GPIO_I && Number == 16) Address = GPIO_MDR1_BASE(Bank);
-  else ASSERT(FALSE);  // Invalid GPIO group / Number
+  switch (Bank) {
+      case SUNXI_GPIO_C:
+          switch (Number) {
+              case 0 ... 15:
+                  Address = GPIO_MDR0_BASE(Bank);
+                  break;
+              case 16:
+                  Address = GPIO_MDR1_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      case SUNXI_GPIO_F:
+          switch (Number) {
+              case 0 ... 6:
+                  Address = GPIO_MDR0_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      case SUNXI_GPIO_G:
+          switch (Number) {
+              case 0 ... 15:
+                  Address = GPIO_MDR0_BASE(Bank);
+                  break;
+              case 16 ... 19:
+                  Address = GPIO_MDR1_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      case SUNXI_GPIO_H:
+          switch (Number) {
+              case 0 ... 10:
+                  Address = GPIO_MDR0_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      case SUNXI_GPIO_I:
+          switch (Number) {
+              case 0 ... 15:
+                  Address = GPIO_MDR0_BASE(Bank);
+                  break;
+              case 16:
+                  Address = GPIO_MDR1_BASE(Bank);
+                  break;
+              default:
+                  ASSERT(FALSE); // Invalid GPIO Number
+                  break;
+          }
+          break;
+      default:
+          ASSERT(FALSE); // Invalid Bank
+          break;
+  }
 
   Configuration = MmioRead32(Address);
   Configuration &= ~(0x3 << Bit);
