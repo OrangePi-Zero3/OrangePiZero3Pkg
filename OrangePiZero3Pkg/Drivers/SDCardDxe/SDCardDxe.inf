@@ -1,0 +1,23 @@
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SDCardDxe
+  FILE_GUID                      = 3989A8CE-A2BF-4C81-BF69-D4555820EC10
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitSDDriver
+
+[Sources.common]
+  SDCardDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  OrangePiZero3Pkg/OrangePiZero3Pkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  DebugLib
+  IoLib
+
+[Depex]
+  TRUE
