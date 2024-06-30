@@ -40,7 +40,7 @@ InitSD ()
   MMC_CONFIG |= (1 << 1); // FIFO Reset
 
   MmioWrite32(SMHC_BASE, MMC_CONFIG);
-  while((MmioRead32(SMHC_BASE) >> 24) & 0x1) { } // Wait for the reset operation to complete
+  while((MmioRead32(SMHC_BASE) >> 1) & 0x1) { DEBUG((EFI_D_WARN, "Waiting for FIFO Reset...\n")); } // Wait for the reset operation to complete
 
   MmioWrite32(SMHC_BASE + SMHC_INTMASK_BASE, 0xFFCE); // According to the H616 documentation this "enables normal interrupt and error abnormal interrupt, and register interrupt function."
 
@@ -49,7 +49,7 @@ InitSD ()
 
   MmioWrite32(SMHC_BASE + SMHC_CLKDIV, MMC_CONFIG);
 
-  DEBUG((EFI_D_WARN, "Card Ready to take commands"));
+  DEBUG((EFI_D_WARN, "Card Ready to take commands\n"));
 
   while(TRUE){}
 }
