@@ -2,6 +2,49 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/IoLib.h>
 
+/*VOID
+SendSDCmd (
+  UINT32 command,
+  UINT32 recieveResponse,
+  UINT32 responseType,
+  UINT32 checkResponseCRC,
+  UINT32 isDataTransfer,
+  UINT32 transferDirection,
+  UINT32 transferMode,
+  UINT32 sendStopCMD,
+  UINT32 waitForDataTransferEnd,
+  UINT32 stopDataTransfer,
+  UINT32 sendInitSeq,
+  UINT32 programClock,
+  UINT32 bootMode,
+  UINT32 expectBootAcknowledgement,
+  UINT32 abortBoot,
+  UINT32 isVoltageSwitchCMD
+)
+{
+  UINT32 cmd = 0;
+  cmd |= command & 0x1F;
+  cmd |= recieveResponse << 6;
+  cmd |= responseType << 7;
+  cmd |= checkResponseCRC << 8;
+  cmd |= isDataTransfer << 9;
+  cmd |= transferDirection << 10;
+  cmd |= transferMode << 11;
+  cmd |= sendStopCMD << 12;
+  cmd |= waitForDataTransferEnd << 13;
+  cmd |= stopDataTransfer << 14;
+  cmd |= sendInitSeq << 15;
+  // Bits 16-20 are empty
+  cmd |= programClock << 21;
+  // Bits 22-23 are empty
+  cmd |= (bootMode & 3) << 24;
+  cmd |= expectBootAcknowledgement << 26;
+  cmd |= abortBoot << 27;
+  cmd |= isVoltageSwitchCMD << 28;
+  // Bits 29-30 are empty
+  cmd |= 1 << 31;
+}*/
+
 VOID
 InitSD ()
 {
@@ -11,6 +54,7 @@ InitSD ()
   UINT32 SMHC_BASE = 0x04020000;
   UINT32 SMHC_INTMASK_BASE = 0x0030;
   UINT32 SMHC_CLKDIV = 0x0004;
+  UINT32 SMHC_CMD = 0x0018;
 
   UINT32 MMC_CLOCK_CONFIG;
   UINT32 MMC_CONFIG;
@@ -50,6 +94,14 @@ InitSD ()
   MmioWrite32(SMHC_BASE + SMHC_CLKDIV, MMC_CONFIG);
 
   DEBUG((EFI_D_WARN, "Card Ready to take commands\n"));
+
+  DEBUG((EFI_D_WARN, "Sending over command to change clock...\n"));
+
+  MmioWrite32(SMHC_BASE + SMHC_CMD, 0x80202000);
+
+  while(MmioRead32(SMHC_BASE + SMHC_CMD) >> 31 & 1) { DEBUG((EFI_D_WARN, "Waiting for command to be sent over...\n")); }
+
+  DEBUG((EFI_D_WARN, "Command has been sent!!!!!\n"));
 
   while(TRUE){}
 }
