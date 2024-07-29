@@ -2,7 +2,7 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/IoLib.h>
 
-/*VOID
+VOID
 SendSDCmd (
   UINT32 command,
   UINT32 recieveResponse,
@@ -23,6 +23,9 @@ SendSDCmd (
 )
 {
   UINT32 cmd = 0;
+  UINT32 SMHC_BASE = 0x04020000;
+  UINT32 SMHC_CMD = 0x0018;
+
   cmd |= command & 0x1F;
   cmd |= recieveResponse << 6;
   cmd |= responseType << 7;
@@ -43,7 +46,9 @@ SendSDCmd (
   cmd |= isVoltageSwitchCMD << 28;
   // Bits 29-30 are empty
   cmd |= 1 << 31;
-}*/
+
+  MmioWrite32(SMHC_BASE + SMHC_CMD, cmd);
+}
 
 VOID
 InitSD ()
@@ -98,6 +103,14 @@ InitSD ()
   DEBUG((EFI_D_WARN, "Sending over command to change clock...\n"));
 
   MmioWrite32(SMHC_BASE + SMHC_CMD, 0x80202000);
+
+  while(MmioRead32(SMHC_BASE + SMHC_CMD) >> 31 & 1) { DEBUG((EFI_D_WARN, "Waiting for command to be sent over...\n")); }
+
+  DEBUG((EFI_D_WARN, "Command has been sent!!!!!\n"));
+
+  DEBUG((EFI_D_WARN, "Sending CMD0\n"));
+
+  SendSDCmd(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0);
 
   while(MmioRead32(SMHC_BASE + SMHC_CMD) >> 31 & 1) { DEBUG((EFI_D_WARN, "Waiting for command to be sent over...\n")); }
 
