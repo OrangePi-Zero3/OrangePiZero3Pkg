@@ -1,5 +1,5 @@
 #include <Library/PcdLib.h>
-#include <AsmMacroIoLibV8.h>
+#include <AsmMacroLib.h>
 #include <AArch64/AArch64.h>
 
 #define LoadConstantToReg(Data, Reg) \

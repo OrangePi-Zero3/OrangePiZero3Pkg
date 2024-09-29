@@ -11,7 +11,7 @@
 #
 #
 
-#include <AsmMacroIoLibV8.h>
+#include <AsmMacroLib.h>
 #include <Library/ArmLib.h>
 
 .text
@@ -54,3 +54,4 @@ ASM_FUNC(ArmPlatformGetCorePosition)
   and   x0, x0, #ARM_CLUSTER_MASK
   add   x0, x1, x0, LSR #6
   ret
+
