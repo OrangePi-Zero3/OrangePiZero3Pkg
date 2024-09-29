@@ -210,6 +210,7 @@
   #
   OrangePiZero3Pkg/Drivers/SunxiGpioDxe/SunxiGpioDxe.inf
   OrangePiZero3Pkg/Drivers/HeartbeatDxe/HeartbeatDxe.inf
+  OrangePiZero3Pkg/Drivers/SdDxe/SdDxe.inf
 
   MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
 

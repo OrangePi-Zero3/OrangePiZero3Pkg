@@ -127,6 +127,7 @@ READ_LOCK_STATUS   = TRUE
   #
   INF OrangePiZero3Pkg/Drivers/SunxiGpioDxe/SunxiGpioDxe.inf
   INF OrangePiZero3Pkg/Drivers/HeartbeatDxe/HeartbeatDxe.inf
+  INF OrangePiZero3Pkg/Drivers/SdDxe/SdDxe.inf
 
   INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
 
