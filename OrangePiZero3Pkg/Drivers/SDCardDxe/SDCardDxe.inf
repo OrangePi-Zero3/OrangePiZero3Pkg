@@ -18,6 +18,7 @@
   UefiDriverEntryPoint
   DebugLib
   IoLib
+  TimerLib
 
 [Depex]
   TRUE

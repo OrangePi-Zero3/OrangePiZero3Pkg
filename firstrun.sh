@@ -4,5 +4,5 @@
 # https://github.com/tianocore/tianocore.github.io/wiki/Using-EDK-II-with-Native-GCC#Install_required_software_from_apt
 set -e
 . build_common.sh
-make -C ../edk2/BaseTools
+CC=gcc-11 make -C ../edk2/BaseTools
 
